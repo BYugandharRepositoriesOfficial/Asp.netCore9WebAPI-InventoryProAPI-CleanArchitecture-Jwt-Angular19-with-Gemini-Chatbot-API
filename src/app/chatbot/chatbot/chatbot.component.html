@@ -1,0 +1,97 @@
+<!-- =======================
+     AI Chat Panel
+======================= -->
+
+<div class="chat-panel">
+
+    <!-- Header -->
+    <div class="chat-header">
+
+        <div class="chat-title">
+
+            <mat-icon>smart_toy</mat-icon>
+
+            <span>AI Assistant</span>
+
+        </div>
+
+        <button mat-icon-button>
+
+            <mat-icon>refresh</mat-icon>
+
+        </button>
+
+    </div>
+
+    <!-- Chat Body -->
+
+    <div class="chat-body">
+
+        <div
+            *ngFor="let msg of messages"
+            [ngClass]="msg.sender === 'user' ? 'user-container' : 'bot-container'">
+
+            <div
+                [ngClass]="msg.sender === 'user' ? 'user-message' : 'bot-message'">
+
+                {{ msg.text }}
+
+            </div>
+
+        </div>
+
+        <!-- Typing Animation -->
+
+        <div
+            *ngIf="isTyping"
+            class="bot-container">
+
+            <div class="bot-message">
+
+                <div class="typing">
+
+                    <span></span>
+
+                    <span></span>
+
+                    <span></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+
+    <div class="chat-footer">
+
+        <mat-form-field
+            appearance="outline"
+            class="chat-input">
+
+            <textarea
+                matInput
+                rows="2"
+                placeholder="Ask anything..."
+                [(ngModel)]="chatMessage"
+                (keyup.enter)="sendMessage()">
+
+            </textarea>
+
+        </mat-form-field>
+
+        <button
+            mat-fab
+            color="primary"
+            (click)="sendMessage()">
+
+            <mat-icon>send</mat-icon>
+
+        </button>
+
+    </div>
+
+</div>

@@ -1,0 +1,469 @@
+<mat-card class="supplier-card">
+
+  <mat-card-header>
+
+    <mat-card-title>
+
+      Suppliers
+
+    </mat-card-title>
+
+    <span class="spacer"></span>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openModal()">
+
+      <mat-icon>add</mat-icon>
+
+      Add Supplier
+
+    </button>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <!-- Search -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+
+        Search Supplier
+
+      </mat-label>
+
+      <input
+        matInput
+        placeholder="Search..."
+        (keyup)="applyFilter($event)">
+
+      <mat-icon matSuffix>
+
+        search
+
+      </mat-icon>
+
+    </mat-form-field>
+
+    <!-- Add / Edit Form -->
+
+    <mat-card
+      *ngIf="showForm"
+      class="form-card">
+
+      <h3>
+
+        {{ isEditing ? 'Edit Supplier' : 'Add Supplier' }}
+
+      </h3>
+
+      <form
+        #form="ngForm"
+        (ngSubmit)="saveSupplier()">
+
+        <div class="row">
+
+          <!-- Supplier Name -->
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+
+              Supplier Name
+
+            </mat-label>
+
+            <mat-icon matPrefix>
+
+              business
+
+            </mat-icon>
+
+            <input
+              matInput
+              required
+              [(ngModel)]="supplierForm.supplierName"
+              name="supplierName">
+
+          </mat-form-field>
+
+          <!-- Contact Person -->
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+
+              Contact Person
+
+            </mat-label>
+
+            <mat-icon matPrefix>
+
+              person
+
+            </mat-icon>
+
+            <input
+              matInput
+              [(ngModel)]="supplierForm.contactPerson"
+              name="contactPerson">
+
+          </mat-form-field>
+
+          <!-- Phone -->
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+
+              Phone Number
+
+            </mat-label>
+
+            <mat-icon matPrefix>
+
+              phone
+
+            </mat-icon>
+
+            <input
+              matInput
+              [(ngModel)]="supplierForm.phoneNumber"
+              name="phoneNumber">
+
+          </mat-form-field>
+
+          <!-- Email -->
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+
+              Email
+
+            </mat-label>
+
+            <mat-icon matPrefix>
+
+              email
+
+            </mat-icon>
+
+            <input
+              matInput
+              [(ngModel)]="supplierForm.email"
+              name="email">
+
+          </mat-form-field>
+
+          <!-- Address -->
+
+          <mat-form-field
+            appearance="outline"
+            class="full-width">
+
+            <mat-label>
+
+              Address
+
+            </mat-label>
+
+            <mat-icon matPrefix>
+
+              location_on
+
+            </mat-icon>
+
+            <textarea
+              matInput
+              rows="3"
+              [(ngModel)]="supplierForm.address"
+              name="address">
+            </textarea>
+
+          </mat-form-field>
+
+          <!-- Status -->
+
+          <mat-checkbox
+            [(ngModel)]="supplierForm.isActive"
+            name="isActive">
+
+            Active Supplier
+
+          </mat-checkbox>
+
+        </div>
+
+        <div class="button-row">
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid">
+
+            {{ isEditing ? 'Update' : 'Save' }}
+
+          </button>
+
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="closeModal()">
+
+            Cancel
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </mat-card>
+
+    <br>
+
+    <!-- Table -->
+
+    <div class="table-container">
+
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="mat-elevation-z3 full-width">
+        <!-- Supplier ID -->
+<ng-container matColumnDef="supplierId">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    ID
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.supplierId }}
+
+  </td>
+
+</ng-container>
+
+<!-- Supplier Name -->
+<ng-container matColumnDef="supplierName">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Supplier Name
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.supplierName }}
+
+  </td>
+
+</ng-container>
+
+<!-- Contact Person -->
+<ng-container matColumnDef="contactPerson">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Contact Person
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.contactPerson }}
+
+  </td>
+
+</ng-container>
+
+<!-- Phone -->
+<ng-container matColumnDef="phoneNumber">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Phone
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.phoneNumber }}
+
+  </td>
+
+</ng-container>
+
+<!-- Email -->
+<ng-container matColumnDef="email">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Email
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.email }}
+
+  </td>
+
+</ng-container>
+
+<!-- Address -->
+<ng-container matColumnDef="address">
+
+  <th mat-header-cell *matHeaderCellDef>
+
+    Address
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.address }}
+
+  </td>
+
+</ng-container>
+
+<!-- Status -->
+<ng-container matColumnDef="isActive">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Status
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    <span
+      [class.active]="s.isActive"
+      [class.inactive]="!s.isActive">
+
+      {{ s.isActive ? 'Active' : 'Inactive' }}
+
+    </span>
+
+  </td>
+
+</ng-container>
+
+<!-- Created Date -->
+<ng-container matColumnDef="createdDate">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Created
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.createdDate | date:'dd/MM/yyyy' }}
+
+  </td>
+
+</ng-container>
+
+<!-- Updated Date -->
+<ng-container matColumnDef="modifiedDate">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Updated
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.modifiedDate | date:'dd/MM/yyyy' }}
+
+  </td>
+
+</ng-container>
+
+<!-- Actions -->
+<ng-container matColumnDef="actions">
+
+  <th mat-header-cell *matHeaderCellDef>
+
+    Actions
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    <button
+      mat-icon-button
+      color="primary"
+      matTooltip="Edit Supplier"
+      (click)="openModal(s)">
+
+      <mat-icon>edit</mat-icon>
+
+    </button>
+
+    <button
+      mat-icon-button
+      color="warn"
+      matTooltip="Delete Supplier"
+      (click)="deleteSupplier(s.supplierId)">
+
+      <mat-icon>delete</mat-icon>
+
+    </button>
+
+  </td>
+
+</ng-container>
+
+<!-- No Data Row -->
+<tr class="mat-row" *matNoDataRow>
+
+  <td class="mat-cell" colspan="9">
+
+    No suppliers found.
+
+  </td>
+
+</tr>
+
+<tr
+  mat-header-row
+  *matHeaderRowDef="displayedColumns">
+</tr>
+
+<tr
+  mat-row
+  *matRowDef="let row; columns: displayedColumns">
+</tr>
+
+</table>
+
+</div>
+
+<mat-paginator
+  [pageSize]="5"
+  [pageSizeOptions]="[5,10,20,50]"
+  showFirstLastButtons>
+</mat-paginator>
+
+</mat-card-content>
+
+</mat-card>

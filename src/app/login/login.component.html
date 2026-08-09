@@ -1,0 +1,76 @@
+<div class="login-container">
+
+  <mat-card class="login-card">
+
+    <mat-card-header>
+      <mat-card-title>📦 InventoryPro</mat-card-title>
+      <br>
+      <mat-card-subtitle>Login</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <form (ngSubmit)="login()">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            [(ngModel)]="username"
+            name="username"
+            placeholder="Enter Email"
+            required>
+
+          <mat-icon matSuffix>email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Enter Password"
+            required>
+
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword = !hidePassword">
+
+            <mat-icon>
+              {{ hidePassword ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+
+          </button>
+
+        </mat-form-field>
+        
+        <mat-checkbox class="mb-3">
+          Remember Me
+        </mat-checkbox>
+
+        <button
+          mat-raised-button
+          color="primary"
+          class="full-width"
+          type="submit">
+          Login
+        </button>
+
+        <div class="register-link">
+          <span>Don't have an account?</span>
+          <a routerLink="/register"> Create New Account</a>
+        </div>
+
+      </form>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</div>

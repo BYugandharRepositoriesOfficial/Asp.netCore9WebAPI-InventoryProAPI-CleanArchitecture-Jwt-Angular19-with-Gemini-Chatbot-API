@@ -1,0 +1,396 @@
+<mat-card class="sale-card">
+
+  <mat-card-header>
+
+    <mat-card-title>
+
+      Sales
+
+    </mat-card-title>
+
+    <span class="spacer"></span>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openModal()">
+
+      <mat-icon>add</mat-icon>
+
+      Add Sale
+
+    </button>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <!-- Search -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>
+
+        Search Sale
+
+      </mat-label>
+
+      <input
+        matInput
+        placeholder="Search..."
+        (keyup)="applyFilter($event)">
+
+      <mat-icon matSuffix>
+
+        search
+
+      </mat-icon>
+
+    </mat-form-field>
+
+    <!-- Add / Edit Form -->
+
+    <mat-card
+      *ngIf="showForm"
+      class="form-card">
+
+      <h3>
+
+        {{ isEditing ? 'Edit Sale' : 'Add Sale' }}
+
+      </h3>
+
+      <form
+        #form="ngForm"
+        (ngSubmit)="saveSale()">
+
+        <div class="row">
+
+          <!-- Sale Number -->
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+
+              Sale Number
+
+            </mat-label>
+
+            <input
+              matInput
+              required
+              [(ngModel)]="saleForm.saleNumber"
+              name="saleNumber">
+
+          </mat-form-field>
+
+          <!-- Customer -->
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+
+              Customer ID
+
+            </mat-label>
+
+            <input
+              matInput
+              type="number"
+              required
+              [(ngModel)]="saleForm.customerId"
+              name="customerId">
+
+          </mat-form-field>
+
+          <!-- Sale Date -->
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+
+              Sale Date
+
+            </mat-label>
+
+            <input
+              matInput
+              type="date"
+              [(ngModel)]="saleForm.saleDate"
+              name="saleDate">
+
+          </mat-form-field>
+
+          <!-- Total Amount -->
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>
+
+              Total Amount
+
+            </mat-label>
+
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="saleForm.totalAmount"
+              name="totalAmount">
+
+          </mat-form-field>
+
+          <!-- Active -->
+
+          <mat-checkbox
+            [(ngModel)]="saleForm.isActive"
+            name="isActive">
+
+            Active
+
+          </mat-checkbox>
+
+        </div>
+
+        <div class="button-row">
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid">
+
+            {{ isEditing ? 'Update' : 'Save' }}
+
+          </button>
+
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="closeModal()">
+
+            Cancel
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </mat-card>
+
+    <br>
+
+    <!-- Material Table -->
+
+    <div class="table-container">
+
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        class="mat-elevation-z3 full-width">
+
+<!-- Sale ID -->
+<ng-container matColumnDef="saleId">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    ID
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.saleId }}
+
+  </td>
+
+</ng-container>
+
+<!-- Sale Number -->
+<ng-container matColumnDef="saleNumber">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Sale Number
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.saleNumber }}
+
+  </td>
+
+</ng-container>
+
+<!-- Customer ID -->
+<ng-container matColumnDef="customerId">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Customer ID
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.customerId }}
+
+  </td>
+
+</ng-container>
+
+<!-- Sale Date -->
+<ng-container matColumnDef="saleDate">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Sale Date
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.saleDate | date:'dd/MM/yyyy' }}
+
+  </td>
+
+</ng-container>
+
+<!-- Total Amount -->
+<ng-container matColumnDef="totalAmount">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Total Amount
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.totalAmount | currency:'INR':'symbol':'1.2-2' }}
+
+  </td>
+
+</ng-container>
+
+<!-- Status -->
+<ng-container matColumnDef="isActive">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Status
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    <span
+      [class.active]="s.isActive"
+      [class.inactive]="!s.isActive">
+
+      {{ s.isActive ? 'Active' : 'Inactive' }}
+
+    </span>
+
+  </td>
+
+</ng-container>
+
+<!-- Created Date -->
+<ng-container matColumnDef="createdDate">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Created
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.createdDate | date:'dd/MM/yyyy' }}
+
+  </td>
+
+</ng-container>
+
+<!-- Updated Date -->
+<ng-container matColumnDef="updatedDate">
+
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+
+    Updated
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    {{ s.updatedDate | date:'dd/MM/yyyy' }}
+
+  </td>
+
+</ng-container>
+
+<!-- Actions -->
+<ng-container matColumnDef="actions">
+
+  <th mat-header-cell *matHeaderCellDef>
+
+    Actions
+
+  </th>
+
+  <td mat-cell *matCellDef="let s">
+
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="openModal(s)"
+      matTooltip="Edit">
+
+      <mat-icon>edit</mat-icon>
+
+    </button>
+
+    <button
+      mat-icon-button
+      color="warn"
+      (click)="deleteSale(s.saleId)"
+      matTooltip="Delete">
+
+      <mat-icon>delete</mat-icon>
+
+    </button>
+
+  </td>
+
+</ng-container>
+
+<tr
+  mat-header-row
+  *matHeaderRowDef="displayedColumns">
+</tr>
+
+<tr
+  mat-row
+  *matRowDef="let row; columns: displayedColumns">
+</tr>
+
+</table>
+
+</div>
+
+<mat-paginator
+  [pageSize]="5"
+  [pageSizeOptions]="[5,10,20,50]"
+  showFirstLastButtons>
+
+</mat-paginator>
+
+</mat-card-content>
+
+</mat-card>

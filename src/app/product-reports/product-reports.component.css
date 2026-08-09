@@ -1,0 +1,47 @@
+.report-card{
+
+    margin:20px;
+
+    border-radius:16px;
+
+    box-shadow:0 4px 18px rgba(0,0,0,.08);
+
+}
+
+mat-card-header{
+
+    background:#f8fbff;
+
+    border-bottom:1px solid #e0e0e0;
+
+    padding:20px;
+
+}
+
+mat-card-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:#1565c0;
+
+}
+
+mat-card-content{
+
+    padding:30px;
+
+}
+
+button{
+
+    margin-top:20px;
+
+}

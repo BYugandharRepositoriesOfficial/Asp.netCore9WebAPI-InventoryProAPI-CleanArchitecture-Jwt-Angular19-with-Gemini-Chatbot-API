@@ -1,0 +1,403 @@
+<mat-card class="customer-card">
+
+  <mat-card-header>
+
+    <mat-card-title>Customers</mat-card-title>
+
+    <span class="spacer"></span>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openModal()">
+
+      <mat-icon>add</mat-icon>
+      Add Customer
+
+    </button>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <!-- Search -->
+
+    <mat-form-field
+      appearance="outline"
+      class="full-width">
+
+      <mat-label>Search Customer</mat-label>
+
+      <input
+        matInput
+        placeholder="Search..."
+        (keyup)="applyFilter($event)">
+
+      <mat-icon matSuffix>search</mat-icon>
+
+    </mat-form-field>
+
+    <!-- Add / Edit Form -->
+
+    <mat-card
+      *ngIf="showForm"
+      class="form-card">
+
+      <h3>
+
+        {{ isEditing ? 'Edit Customer' : 'Add Customer' }}
+
+      </h3>
+
+      <form
+        #form="ngForm"
+        (ngSubmit)="saveCustomer()">
+
+        <div class="row">
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Customer Name</mat-label>
+
+            <input
+              matInput
+              required
+              [(ngModel)]="customerForm.customerName"
+              name="customerName">
+
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Phone Number</mat-label>
+
+            <input
+              matInput
+              required
+              [(ngModel)]="customerForm.phoneNumber"
+              name="phoneNumber">
+
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Email</mat-label>
+
+            <input
+              matInput
+              type="email"
+              [(ngModel)]="customerForm.email"
+              name="email">
+
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+
+            <mat-label>Address</mat-label>
+
+            <textarea
+              matInput
+              rows="3"
+              [(ngModel)]="customerForm.address"
+              name="address">
+            </textarea>
+
+          </mat-form-field>
+
+          <mat-checkbox
+            [(ngModel)]="customerForm.isActive"
+            name="isActive">
+
+            Active Customer
+
+          </mat-checkbox>
+
+        </div>
+
+        <div class="button-row">
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid">
+
+            {{ isEditing ? 'Update' : 'Save' }}
+
+          </button>
+
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="closeModal()">
+
+            Cancel
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </mat-card>
+
+    <br>
+
+    <!-- Material Table -->
+
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      class="mat-elevation-z3 full-width">
+<!-- Customer ID -->
+<ng-container matColumnDef="customerId">
+
+  <th
+    mat-header-cell
+    *matHeaderCellDef
+    mat-sort-header>
+
+    ID
+
+  </th>
+
+  <td
+    mat-cell
+    *matCellDef="let c">
+
+    {{c.customerId}}
+
+  </td>
+
+</ng-container>
+
+<!-- Customer Name -->
+
+<ng-container matColumnDef="customerName">
+
+  <th
+    mat-header-cell
+    *matHeaderCellDef
+    mat-sort-header>
+
+    Customer Name
+
+  </th>
+
+  <td
+    mat-cell
+    *matCellDef="let c">
+
+    {{c.customerName}}
+
+  </td>
+
+</ng-container>
+
+<!-- Phone -->
+
+<ng-container matColumnDef="phoneNumber">
+
+  <th
+    mat-header-cell
+    *matHeaderCellDef
+    mat-sort-header>
+
+    Phone Number
+
+  </th>
+
+  <td
+    mat-cell
+    *matCellDef="let c">
+
+    {{c.phoneNumber}}
+
+  </td>
+
+</ng-container>
+
+<!-- Email -->
+
+<ng-container matColumnDef="email">
+
+  <th
+    mat-header-cell
+    *matHeaderCellDef
+    mat-sort-header>
+
+    Email
+
+  </th>
+
+  <td
+    mat-cell
+    *matCellDef="let c">
+
+    {{c.email}}
+
+  </td>
+
+</ng-container>
+
+<!-- Address -->
+
+<ng-container matColumnDef="address">
+
+  <th
+    mat-header-cell
+    *matHeaderCellDef>
+
+    Address
+
+  </th>
+
+  <td
+    mat-cell
+    *matCellDef="let c">
+
+    {{c.address}}
+
+  </td>
+
+</ng-container>
+
+<!-- Status -->
+
+<ng-container matColumnDef="isActive">
+
+  <th
+    mat-header-cell
+    *matHeaderCellDef
+    mat-sort-header>
+
+    Status
+
+  </th>
+
+  <td
+    mat-cell
+    *matCellDef="let c">
+
+    <span
+      [class.active]="c.isActive"
+      [class.inactive]="!c.isActive">
+
+      {{c.isActive ? 'Active' : 'Inactive'}}
+
+    </span>
+
+  </td>
+
+</ng-container>
+
+<!-- Created Date -->
+
+<ng-container matColumnDef="createdDate">
+
+  <th
+    mat-header-cell
+    *matHeaderCellDef
+    mat-sort-header>
+
+    Created
+
+  </th>
+
+  <td
+    mat-cell
+    *matCellDef="let c">
+
+    {{c.createdDate | date:'dd/MM/yyyy'}}
+
+  </td>
+
+</ng-container>
+
+<!-- Updated Date -->
+
+<ng-container matColumnDef="updatedDate">
+
+  <th
+    mat-header-cell
+    *matHeaderCellDef
+    mat-sort-header>
+
+    Updated
+
+  </th>
+
+  <td
+    mat-cell
+    *matCellDef="let c">
+
+    {{c.updatedDate | date:'dd/MM/yyyy'}}
+
+  </td>
+
+</ng-container>
+
+<!-- Actions -->
+
+<ng-container matColumnDef="actions">
+
+  <th
+    mat-header-cell
+    *matHeaderCellDef>
+
+    Actions
+
+  </th>
+
+  <td
+    mat-cell
+    *matCellDef="let c">
+
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="openModal(c)"
+      matTooltip="Edit">
+
+      <mat-icon>edit</mat-icon>
+
+    </button>
+
+    <button
+      mat-icon-button
+      color="warn"
+      (click)="deleteCustomer(c.customerId)"
+      matTooltip="Delete">
+
+      <mat-icon>delete</mat-icon>
+
+    </button>
+
+  </td>
+
+</ng-container>
+
+<tr
+  mat-header-row
+  *matHeaderRowDef="displayedColumns">
+</tr>
+
+<tr
+  mat-row
+  *matRowDef="let row; columns: displayedColumns">
+</tr>
+
+</table>
+
+<mat-paginator
+  [pageSize]="5"
+  [pageSizeOptions]="[5,10,20,50]"
+  showFirstLastButtons>
+
+</mat-paginator>
+
+</mat-card-content>
+
+</mat-card>
